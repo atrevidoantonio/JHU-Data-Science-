@@ -1,0 +1,33 @@
+---
+author: "Anthony Perez Eisenbarth"
+date: "2, July 2021"
+output: html_document
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+```
+## July 2nd, 2021
+
+The source code is available at [GitHub](https://github.com/atrevidoantonio/JHU-Data-Science). [Just click here!](https://github.com/atrevidoantonio/JHU-Data-Science)
+
+## Smith Tower
+```{r}
+library(leaflet)
+map <- leaflet() %>% addTiles()
+```
+
+Historic Smith Tower in downtown Seattle
+```{r}
+SmithTower <- makeIcon(
+  iconUrl = "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/73/e8/8b.jpg",
+  iconWidth = 900, iconHeight = 120,
+  iconAnchorX = 30*408/255/2, iconAnchorY = 30/2
+)
+```
+
+```{r}
+SmithTowerPopup <- c("<a href= 'https://www.smithtower.com/' >Smith Tower <br><img src='https://media.tacdn.com/media/attractions-splice-spp-674x446/06/73/e8/8b.jpg' width='210' height='132'  alt='Smith Tower' title='Smith Tower Settle'></a>")
+map %>%
+  addTiles() %>%
+  addMarkers(lat = 47.6019178871547, lng = -122.33128967358844, popup = SmithTowerPopup)
