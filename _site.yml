@@ -1,7 +1,9 @@
 name: "JHU Developing Data Products"
 output_dir: "."
 navbar:
-  title: "Hosting a Map"
   left:
-    - text: "Home"
-      href: index.html
+    - text: "Hosting a Map"
+      href: map.html
+output:
+  html_document:
+    theme: flatly
