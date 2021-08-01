@@ -1,3 +1,6 @@
 ---
 title: "JHU Data Science Specialization"
+output:
+  html_document:
+    css: "style.css"
 ---

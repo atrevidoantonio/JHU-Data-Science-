@@ -2,8 +2,12 @@ name: "JHU Developing Data Products"
 output_dir: "."
 navbar:
   left:
+    - text: "Home"
+      href: index.html
     - text: "Hosting a Map"
       href: map.html
+    - text: "Developing Data Products - Plotly"
+      href: plotly.html
 output:
   html_document:
     theme: flatly

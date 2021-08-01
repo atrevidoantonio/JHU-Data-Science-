@@ -1,0 +1,49 @@
+---
+title: ""
+author: "atrevidoantonio"
+date: "2021-07-31"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(tint)
+knitr::opts_chunk$set(warning = FALSE, echo = FALSE, message = FALSE, cache.extra = packageVersion('tint'))
+library(knitr)
+library(tinytex)
+library(plotly)
+library(tidyverse)
+library(dplyr)
+library(scales)
+library(tidyr)
+library(blscrapeR)
+library(purrr)
+library(lubridate)
+library(zoo)
+library(readr)
+```
+
+```{r theme, include = FALSE}
+
+raspberry <- "#DB2955"
+onyx <- "#313435"
+```
+
+
+```{r data, include = FALSE}
+data("sunspots")
+
+data <- as.data.frame(sunspots) %>%
+  transmute(date = seq(as.Date("1749-01-01"), as.Date("1983-12-01"), by = "month"), sunspots = x)
+```
+
+```{r plot}
+plot_ly(data, x = ~date, y = ~sunspots, type = 'scatter', mode = 'markers', 
+        marker = list(color = raspberry)) %>%
+  layout(xaxis = list(title = ""), yaxis = list(title = "Sunspots"), 
+         annotations =  list(x = 1, y = -0.1, text = "Source: Sunspot numbers 1749 to 1983. Collected at Swiss Federal Observatory, Zurich until 1960, then Tokyo Astronomical Observatory.", 
+      showarrow = F, xref = 'paper', yref = 'paper', 
+      xanchor = 'right', yanchor='auto', xshift = 0, yshift = 0,
+      font = list(size = 10, color = onyx)))
+```
+
+Sunspots are caused by disturbances in the Sun's magnetic field welling up to the photosphere, the Sun's visible "surface". The powerful magnetic fields in the vicinity of sunspots produce active regions on the Sun.
