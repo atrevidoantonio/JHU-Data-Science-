@@ -1,0 +1,294 @@
+---
+title: "Motor Trend"
+pdf_document:
+  fig_width: 6
+fig_height: 5
+fig_caption: true
+latex_engine: pdflatex
+includes: 
+  in_header: "preamble.tex"
+fontsize: 11pt
+urlcolor: blue
+linkcolor: blue
+geometry: width = 140mm, top = 10mm, bottom = 20mm
+---
+
+```{r global options, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+``` {r data, include = FALSE}
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(MASS)
+library(ggplot2)
+library(ggpubr)
+library(ggthemes)
+library(ggthemr)
+library(ggfortify)
+library(gt)
+library(scales)
+library(stargazer)
+library(extrafont)
+library(AICcmodavg)
+
+
+turq <- "#76E7CD"
+emerald <- "#32936F"
+orchid <- "#CD7A98"
+sienna <- "#E9724C"
+copper <- "#B87D4b"
+violet <- "#AA78A6"
+iceberg <- "#79ADDC"
+powder <- "#A4CEDF"
+sapphire <- "#255F85"
+cherry <- "#B4415C"
+liver <- "#4D4B58"
+raspberry <- "#DB2955"
+melon <- "#FFC09F"
+champagne <- "#ECCFC3"
+charm <- "#E49AB0"
+lapis <- "#38618C"
+rifle <- "#484C43"
+onyx <- "#313435"
+viridian <- "#5A876F"
+peach <- "#EBBE9B"
+davys <- "#505A5B"
+prussian <- "#113255"
+puce <- "#CE7B91"
+burgundy <- "#771824"
+eggplant <- "#684756"
+honey <- "#F7B32B"
+tuscan <- "#804E49"
+khaki <- "#9fae84"
+aqua <- "#668f80"
+clay <-  "#4E5C47"
+persian <- "#721817"
+hunter <- "#4a6670"
+sparkle <- "#2F5075"
+russian.violet <- "#420039"
+claret <- "#7C0B2B"
+baby  <- "#47AFFF" 
+mint <- "#99EDCC"
+colombia <- "#C7E8F3"
+crimson <- "#521422"
+raisin <- "#332E3C"
+dim_gray <- "#61636B"
+sky <- "#7CD4DF"
+pale_mint <- "#73BFB0"
+jungle <- "#193832"
+amazon <- "#317658"
+charcoal_blue <- "#2D3A4E"
+aqua <- "#80D39B"
+grey <- "#61636B"
+
+ggthemr::ggthemr(palette = "fresh", layout = "clean", line_weight = 0.5)
+
+cools <- c(pale_mint, violet, baby, sapphire, khaki, 
+           sparkle, amazon, colombia, turq, sky, 
+           charcoal_blue, viridian, prussian, jungle)
+data("mtcars")
+data <- mtcars
+
+```
+
+## Executive Summary {.tabset}
+
+Looking at a data set of a collection of cars, explore the relationship between a set of variables and miles per gallon (MPG) (outcome)
+
+* Is an automatic or manual transmission better for MPG?
+* Quantify the MPG difference between automatic and manual transmissions.
+
+
+The results indicate that, although, there is partial evidence supporting the hypothesis that manual transmission provides better fuel efficiency, this is not borne out by the data. The results from stepwise regression indicate that although there is a positive association with fuel efficiency and manual transmission the result is not statistically significant. There are a number of confounding factors that may be the reason for this, among the most important are the weight of the car and horsepower. On this point, the fact that the majority of those cars with manual transmission tended, on average, to be smaller both in terms of weight and engine size is a major confounding element. In the dataset, manual transmission cars were more likely to be smaller, confounding the effect of transmission type. Accounting for cylinder number, weight, and horsepower mitigates the affect of transmission type. Preliminary results from a simple linear regression model with transmission type as the sole explanatory variable suggests that manual transmission improves fuel efficiency by 7.2 miles per gallon. Upon further inspection, a model selected by stepwise regression suggests that this improvement is only 1.8 miles; and this is not statistically significant at standard levels of confidence. 
+
+A limitation of these results are the small sample size and the lack of consideration of interaction variables. Any further study to quantify the effect of transmission type on fuel efficiency would require a much larger and more representative sample.
+
+
+## EDA {.tabset}
+
+Since we are exploring the impact of transmission type on gas mileage (MPG), we can start our analysis by plotting the gas mileage of each car against its cylinder number (V4, V6, V8). But rather than just a simple scatter plot with MPG plotted against cylinder number, we can also visualize a few other key factors affecting MPG. In this case, let's color the observations by transmission type and allocate the size of points by horsepower (we could also use engine displacement rather than horsepower).
+
+``` {r fig.align = "center"}
+data %>%
+  mutate(am = if_else(am == 0, "Automatic", "Manual")) %>%
+  ggplot(aes(x = as.factor(cyl), size = hp, group = as.factor(cyl), y = mpg, color = as.factor(am))) +
+  geom_jitter(shape  = 19) +
+  scale_size_continuous(range = c(.1, 12), labels = comma_format(), breaks = c(100, 200, 300, 400),
+                        guide = guide_legend(override.aes = list(shape = (20), color = sapphire))) +
+  theme(legend.position = "bottom",
+        legend.title = element_text(size = 10),
+        plot.title = element_text(face = "plain")) +
+  scale_color_manual(values = c(sapphire, charm)) +
+  scale_y_continuous(limits = c(5,35)) +
+  theme(text = element_text(color = "black", family = "Roboto Condensed")) + 
+  labs(y = "MPG (miles per gallon) \n", x = "Cylinder",
+       color = "", size = "Horsepower", title = "Gas mileage by cylinder, horsepower, and transmission type")
+
+```
+
+From first glance there is a noticeable negative linear association with MPG and the number of cylinders a car possesses. By the same token, there is a strong correlation with horsepower and cylinder number, which implies that with more horsepower, there is an associated decline in fuel efficiency. Inspecting this plot, however, it is rather difficult to gauge whether manual transmission cars have better fuel efficiency. Noticeably, there are a large number of number of manual transmission cars with four cylinders than those with an automatic transmission.  We can confirm our visual inspection by presenting the summary statistics of the cars grouped by cylinder number and transmission type. 
+
+```{r}
+
+data %>%
+  mutate(am = if_else(am == 0, "Automatic", "Manual"), 
+         wt = 1000*wt,
+         cyl = case_when(cyl == 4 ~ "4-cylinder", 
+                         cyl == 6 ~ "6-cylinder",
+                         cyl == 8 ~ "8-cylinder")) %>%
+  group_by(cyl, am) %>%
+  summarise_at(c("mpg", "disp", "hp", "wt", "qsec"), mean) %>%
+  mutate_at(c("mpg", "disp", "hp", "wt", "qsec"), round, digits = 2) %>%
+  gt() %>%
+  cols_label(
+    am = md("**Transmission**"),
+    mpg = md("**MPG**"),
+    disp = md("**Displacement**"),
+    hp = md("**Horsepower**"),
+    wt = md("**Weight**"),
+    qsec = md("**1/4 mile time**")) %>%
+  tab_header(title = "Summary statistics") %>%
+  tab_options(table.font.style = "Roboto Condensed")
+
+```
+
+A boxplot better reveals the difference in fuel efficiency between the two transmission types. Plotting these groups and allocating the size of the points by the weight of the cars (measured in pounds) reveals another, and perhaps, obvious pattern: heavier cars tend to have worse fuel efficiency. The boxplot, however, also reveals that manual transmission cars tend to have higher fuel efficiency than those with automatic transmission. This relationship, however, is potentially confounded by other factors, namely, the weight of the car and horsepower.
+
+
+```{r fig.align='center'}
+data %>%
+  mutate(am = if_else(am == 0, "Automatic", "Manual")) %>%
+  ggplot(aes(x = as.factor(am), group = as.factor(am), size = wt*1000, y = mpg)) +
+  stat_boxplot(geom = "errorbar", color = onyx) + 
+  stat_summary(fun = mean, geom = "crossbar", width = 0.5, size = 0.1) +
+  geom_jitter(shape  = 19, width = 0.2, color = sapphire, ) +
+  scale_size_continuous(range = c(.1, 12), labels = comma_format(), breaks = c(1500, 2500, 3000, 5000),
+                        guide = guide_legend(override.aes = list(shape = 19, color = sapphire))) +
+  theme(legend.position = "bottom",
+        legend.title = element_text(size = 10),
+        plot.title = element_text(face = "plain"),
+        text = element_text(color = "black", family = "Roboto Condensed")) +
+  scale_color_manual(values = c(sapphire, charm)) +
+  scale_y_continuous(limits = c(5,35)) +
+  labs(y = "MPG (miles per gallon) \n", x = "",
+       color = "", size = "Weight (pounds)", title = "Gas mileage by transmission type and weight")
+
+```
+
+
+```{r}
+
+data %>%
+  mutate(am = if_else(am == 0, "Automatic", "Manual"),
+         wt = wt*1000) %>%
+  group_by(am) %>%
+  summarise_at(c("mpg", "disp", "hp", "wt", "qsec"), mean) %>%
+  mutate_at(c("mpg", "disp", "hp", "wt", "qsec"), round, digits = 2) %>%
+  gt() %>%
+  cols_label(
+    am = md("**Transmission**"),
+    mpg = md("**MPG**"),
+    disp = md("**Displacement**"),
+    hp = md("**Horsepower**"),
+    wt = md("**Weight**"),
+    qsec = md("**1/4 mile time**")) %>%
+  tab_header(title = "Summary statistics") %>%
+  tab_options(table.font.style = "Roboto Condensed")
+```
+
+
+
+``` {r}
+t.test(mtcars$mpg~mtcars$am)
+```
+
+```{r}
+data <-
+  data %>%
+  mutate_at(c("cyl", "vs", "am", "gear", "carb"), as.factor)
+```
+
+
+```{r, results='asis'}
+simple.model <- lm(mpg ~ am, data = data)
+
+stargazer(
+  simple.model,
+  type = "html",
+  title = "Simple Linear Regression Model",
+  column.labels = c(""),
+  colnames = FALSE,
+  model.numbers = FALSE,
+  dep.var.caption = " ",
+  dep.var.labels = "Fuel Efficiency (MPG)",
+  covariate.labels = c("Manual Transmission"),
+  keep.stat = c("rsq", "f"),
+  notes.align = "l",
+  add.lines = list(c("Corrected AIC", round(AICc(simple.model), 1))),
+  style = "AER"
+  )
+
+```
+
+```{r, results='asis'}
+full.model <- lm(mpg ~., data = data)
+
+stargazer(
+  full.model,
+  type = "html",
+  title = "Full Linear Regression Model",
+  column.labels = c(""),
+  colnames = FALSE,
+  model.numbers = FALSE,
+  dep.var.caption = " ",
+  dep.var.labels = "Fuel Efficiency (MPG)",
+  covariate.labels = c("Six cylinder", "Eight cylinder", "Displacement",
+                       "Horsepower", "Rear axle ratio", "Weight",
+                       "Quarter-mile time", "Straight engine", 
+                       "Manual Transmission", "Four gears", "Five gears",
+                       "2-barrel carburetor", "3-barrel carburetor", "4-barrel carburetor",
+                       "6-barrel carburetor", "8-barrel carburetor"),
+  keep.stat = c("rsq", "f"),
+  notes.align = "l",
+  add.lines = list(c("Corrected AIC", round(AICc(simple.model), 1))),
+  style = "AER"
+  )
+
+```
+
+
+Switching to stepwise regression to determine the best model. 
+
+```{r, results = 'asis'}
+step.model <- stepAIC(full.model, direction = "both", 
+                      trace = FALSE)
+stargazer(
+  step.model,
+  type = "html",
+  title = "Full Linear Regression Model",
+  column.labels = c(""),
+  colnames = FALSE,
+  model.numbers = FALSE,
+  dep.var.caption = " ",
+  dep.var.labels = "Fuel Efficiency (MPG)",
+  covariate.labels = c("Six cylinder", "Eight cylinder", "Horsepower", "Weight", "Manual Transmission"),
+  keep.stat = c("rsq", "f"),
+  notes.align = "l",
+  add.lines = list(c("Corrected AIC", round(AICc(simple.model), 1))),
+  style = "AER"
+  )
+```
+
+```{r}
+anova(simple.model, step.model)
+```
+
+## Appendix
+
+```{r}
+
+autoplot(step.model) + labs(title = "Regression Diagnostics")
+
+```

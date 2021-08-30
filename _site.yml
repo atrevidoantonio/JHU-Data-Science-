@@ -1,4 +1,4 @@
-name: "JHU Developing Data Products"
+name: "JHU Data Science Specialization"
 output_dir: "."
 navbar:
   left:
@@ -8,6 +8,10 @@ navbar:
       href: map.html
     - text: "Developing Data Products - Plotly"
       href: plotly.html
+    - text: "Regression Models"
+      href: regression_models.html
+    - text: "Developing Data Products"
+      href: presentation.html
 output:
   html_document:
-    theme: flatly
+    theme: lumen

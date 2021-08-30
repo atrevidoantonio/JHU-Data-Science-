@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Anthony Perez Eisenbarth" />
+  <meta name="date" content="2021-08-29" />
+  <title>presentation.knit</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+              </style>
+  <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+  <link href="site_libs/slidy-2/styles/slidy.css" rel="stylesheet" />
+  <script src="site_libs/slidy-2/scripts/slidy.js"></script>
+  <script src="site_libs/slidy_shiny-1/slidy_shiny.js"></script>
+</head>
+<body>
+<div id="introduction" class="slide section level1">
+<h1>Introduction</h1>
+<p>Have you ever wondered how diamonds are priced beyond the number of carats(or weight)? Price also depends on the diamond’s cut, color, and clarity.</p>
+<ul>
+<li>Cut: quality of the diamond from best to worst (Ideal, Premium, Very Good, Good, Fair)</li>
+<li>Color: best(D) to worst(J)</li>
+<li>Clarity: measures how clear the diamond is from best to worst (IF, VVS2, VVS1, VS2, VS1, SI2, SI1, I1)</li>
+</ul>
+</div>
+<div id="diamonds" class="slide section level1">
+<h1>Diamonds</h1>
+<p>Here is a summary of the “diamonds” dataset found in the ggplot2 R package. As you can see, the factors were measured in over 50,000 diamonds</p>
+<pre><code>## tibble [53,940 x 5] (S3: tbl_df/tbl/data.frame)
+##  $ carat  : num [1:53940] 0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+##  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
+##  $ color  : Ord.factor w/ 7 levels &quot;D&quot;&lt;&quot;E&quot;&lt;&quot;F&quot;&lt;&quot;G&quot;&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
+##  $ clarity: Ord.factor w/ 8 levels &quot;I1&quot;&lt;&quot;SI2&quot;&lt;&quot;SI1&quot;&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
+##  $ price  : int [1:53940] 326 326 327 334 335 336 336 337 337 338 ...</code></pre>
+</div>
+<div id="visualizing-diamond-prices" class="slide section level1">
+<h1>Visualizing Diamond Prices</h1>
+<p>In data analysis more than anything, a picture really is worth a thousand words.</p>
+<p><img src="presentation_files/figure-slidy/unnamed-chunk-2-1.png" width="768" /></p>
+</div>
+<div id="shiny" class="slide section level1">
+<h1>Shiny</h1>
+<p>The app builds off this and utilizes a linear regression model to predict the price of a diamond given its features. You can pick and choose what features to give the model and the app will provide the predicted price of your diamond.</p>
+</div>
+<div id="links" class="slide section level1">
+<h1>Links</h1>
+<ul>
+<li>shiny app:<a href="https://atrevidoantonio93.shinyapps.io/data_products/" class="uri">https://atrevidoantonio93.shinyapps.io/data_products/</a></li>
+<li>source code: <a href="https://github.com/atrevidoantonio/Developing-Data-Products-Project" class="uri">https://github.com/atrevidoantonio/Developing-Data-Products-Project</a></li>
+</ul>
+</div>
+
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>

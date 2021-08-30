@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Motor Trend</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="map.html">Hosting a Map</a>
+</li>
+<li>
+  <a href="plotly.html">Developing Data Products - Plotly</a>
+</li>
+<li>
+  <a href="regression_models.html">Regression Models</a>
+</li>
+<li>
+  <a href="presentation.html">Developing Data Products</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Motor Trend</h1>
+
+</div>
+
+
+<div id="executive-summary" class="section level2 tabset">
+<h2 class="tabset">Executive Summary</h2>
+<p>Looking at a data set of a collection of cars, explore the relationship between a set of variables and miles per gallon (MPG) (outcome)</p>
+<ul>
+<li>Is an automatic or manual transmission better for MPG?</li>
+<li>Quantify the MPG difference between automatic and manual transmissions.</li>
+</ul>
+<p>The results indicate that, although, there is partial evidence supporting the hypothesis that manual transmission provides better fuel efficiency, this is not borne out by the data. The results from stepwise regression indicate that although there is a positive association with fuel efficiency and manual transmission the result is not statistically significant. There are a number of confounding factors that may be the reason for this, among the most important are the weight of the car and horsepower. On this point, the fact that the majority of those cars with manual transmission tended, on average, to be smaller both in terms of weight and engine size is a major confounding element. In the dataset, manual transmission cars were more likely to be smaller, confounding the effect of transmission type. Accounting for cylinder number, weight, and horsepower mitigates the affect of transmission type. Preliminary results from a simple linear regression model with transmission type as the sole explanatory variable suggests that manual transmission improves fuel efficiency by 7.2 miles per gallon. Upon further inspection, a model selected by stepwise regression suggests that this improvement is only 1.8 miles; and this is not statistically significant at standard levels of confidence.</p>
+<p>A limitation of these results are the small sample size and the lack of consideration of interaction variables. Any further study to quantify the effect of transmission type on fuel efficiency would require a much larger and more representative sample.</p>
+</div>
+<div id="eda" class="section level2 tabset">
+<h2 class="tabset">EDA</h2>
+<p>Since we are exploring the impact of transmission type on gas mileage (MPG), we can start our analysis by plotting the gas mileage of each car against its cylinder number (V4, V6, V8). But rather than just a simple scatter plot with MPG plotted against cylinder number, we can also visualize a few other key factors affecting MPG. In this case, let’s color the observations by transmission type and allocate the size of points by horsepower (we could also use engine displacement rather than horsepower).</p>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>From first glance there is a noticeable negative linear association with MPG and the number of cylinders a car possesses. By the same token, there is a strong correlation with horsepower and cylinder number, which implies that with more horsepower, there is an associated decline in fuel efficiency. Inspecting this plot, however, it is rather difficult to gauge whether manual transmission cars have better fuel efficiency. Noticeably, there are a large number of number of manual transmission cars with four cylinders than those with an automatic transmission. We can confirm our visual inspection by presenting the summary statistics of the cars grouped by cylinder number and transmission type.</p>
+<div id="zaigdqkviu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#zaigdqkviu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: Roboto Condensed;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zaigdqkviu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zaigdqkviu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zaigdqkviu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zaigdqkviu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zaigdqkviu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zaigdqkviu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zaigdqkviu .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zaigdqkviu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zaigdqkviu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zaigdqkviu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zaigdqkviu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zaigdqkviu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#zaigdqkviu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zaigdqkviu .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zaigdqkviu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zaigdqkviu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zaigdqkviu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zaigdqkviu .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zaigdqkviu .gt_left {
+  text-align: left;
+}
+
+#zaigdqkviu .gt_center {
+  text-align: center;
+}
+
+#zaigdqkviu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zaigdqkviu .gt_font_normal {
+  font-weight: normal;
+}
+
+#zaigdqkviu .gt_font_bold {
+  font-weight: bold;
+}
+
+#zaigdqkviu .gt_font_italic {
+  font-style: italic;
+}
+
+#zaigdqkviu .gt_super {
+  font-size: 65%;
+}
+
+#zaigdqkviu .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Summary statistics</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Transmission</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>MPG</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Displacement</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Horsepower</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Weight</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>1/4 mile time</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="6" class="gt_group_heading">4-cylinder</td>
+    </tr>
+    <tr><td class="gt_row gt_left">Automatic</td>
+<td class="gt_row gt_right">22.90</td>
+<td class="gt_row gt_right">135.87</td>
+<td class="gt_row gt_right">84.67</td>
+<td class="gt_row gt_right">2935.00</td>
+<td class="gt_row gt_right">20.97</td></tr>
+    <tr><td class="gt_row gt_left">Manual</td>
+<td class="gt_row gt_right">28.08</td>
+<td class="gt_row gt_right">93.61</td>
+<td class="gt_row gt_right">81.88</td>
+<td class="gt_row gt_right">2042.25</td>
+<td class="gt_row gt_right">18.45</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="6" class="gt_group_heading">6-cylinder</td>
+    </tr>
+    <tr><td class="gt_row gt_left">Automatic</td>
+<td class="gt_row gt_right">19.12</td>
+<td class="gt_row gt_right">204.55</td>
+<td class="gt_row gt_right">115.25</td>
+<td class="gt_row gt_right">3388.75</td>
+<td class="gt_row gt_right">19.22</td></tr>
+    <tr><td class="gt_row gt_left">Manual</td>
+<td class="gt_row gt_right">20.57</td>
+<td class="gt_row gt_right">155.00</td>
+<td class="gt_row gt_right">131.67</td>
+<td class="gt_row gt_right">2755.00</td>
+<td class="gt_row gt_right">16.33</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="6" class="gt_group_heading">8-cylinder</td>
+    </tr>
+    <tr><td class="gt_row gt_left">Automatic</td>
+<td class="gt_row gt_right">15.05</td>
+<td class="gt_row gt_right">357.62</td>
+<td class="gt_row gt_right">194.17</td>
+<td class="gt_row gt_right">4104.08</td>
+<td class="gt_row gt_right">17.14</td></tr>
+    <tr><td class="gt_row gt_left">Manual</td>
+<td class="gt_row gt_right">15.40</td>
+<td class="gt_row gt_right">326.00</td>
+<td class="gt_row gt_right">299.50</td>
+<td class="gt_row gt_right">3370.00</td>
+<td class="gt_row gt_right">14.55</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>A boxplot better reveals the difference in fuel efficiency between the two transmission types. Plotting these groups and allocating the size of the points by the weight of the cars (measured in pounds) reveals another, and perhaps, obvious pattern: heavier cars tend to have worse fuel efficiency. The boxplot, however, also reveals that manual transmission cars tend to have higher fuel efficiency than those with automatic transmission. This relationship, however, is potentially confounded by other factors, namely, the weight of the car and horsepower.</p>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="lucyqogmld" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#lucyqogmld .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: Roboto Condensed;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lucyqogmld .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lucyqogmld .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lucyqogmld .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lucyqogmld .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lucyqogmld .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lucyqogmld .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lucyqogmld .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lucyqogmld .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lucyqogmld .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lucyqogmld .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lucyqogmld .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lucyqogmld .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#lucyqogmld .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lucyqogmld .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lucyqogmld .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lucyqogmld .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lucyqogmld .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lucyqogmld .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lucyqogmld .gt_left {
+  text-align: left;
+}
+
+#lucyqogmld .gt_center {
+  text-align: center;
+}
+
+#lucyqogmld .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lucyqogmld .gt_font_normal {
+  font-weight: normal;
+}
+
+#lucyqogmld .gt_font_bold {
+  font-weight: bold;
+}
+
+#lucyqogmld .gt_font_italic {
+  font-style: italic;
+}
+
+#lucyqogmld .gt_super {
+  font-size: 65%;
+}
+
+#lucyqogmld .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Summary statistics</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Transmission</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>MPG</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Displacement</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Horsepower</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Weight</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>1/4 mile time</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Automatic</td>
+<td class="gt_row gt_right">17.15</td>
+<td class="gt_row gt_right">290.38</td>
+<td class="gt_row gt_right">160.26</td>
+<td class="gt_row gt_right">3768.89</td>
+<td class="gt_row gt_right">18.18</td></tr>
+    <tr><td class="gt_row gt_left">Manual</td>
+<td class="gt_row gt_right">24.39</td>
+<td class="gt_row gt_right">143.53</td>
+<td class="gt_row gt_right">126.85</td>
+<td class="gt_row gt_right">2411.00</td>
+<td class="gt_row gt_right">17.36</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  mtcars$mpg by mtcars$am
+## t = -3.7671, df = 18.332, p-value = 0.001374
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -11.280194  -3.209684
+## sample estimates:
+## mean in group 0 mean in group 1 
+##        17.14737        24.39231</code></pre>
+<table style="text-align:center">
+<caption>
+<strong>Simple Linear Regression Model</strong>
+</caption>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Fuel Efficiency (MPG)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Manual Transmission
+</td>
+<td>
+7.245<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.764)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+17.147<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.125)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Corrected AIC
+</td>
+<td>
+197.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.360
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+16.860<sup>***</sup> (df = 1; 30)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Notes:</em>
+</td>
+<td style="text-align:left">
+<sup>***</sup>Significant at the 1 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>**</sup>Significant at the 5 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>*</sup>Significant at the 10 percent level.
+</td>
+</tr>
+</table>
+<table style="text-align:center">
+<caption>
+<strong>Full Linear Regression Model</strong>
+</caption>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Fuel Efficiency (MPG)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Six cylinder
+</td>
+<td>
+-2.649
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3.041)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Eight cylinder
+</td>
+<td>
+-0.336
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(7.160)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Displacement
+</td>
+<td>
+0.036
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.032)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Horsepower
+</td>
+<td>
+-0.071<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.039)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Rear axle ratio
+</td>
+<td>
+1.183
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.483)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Weight
+</td>
+<td>
+-4.530<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.539)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Quarter-mile time
+</td>
+<td>
+0.368
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.935)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Straight engine
+</td>
+<td>
+1.931
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.871)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Manual Transmission
+</td>
+<td>
+1.212
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3.214)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Four gears
+</td>
+<td>
+1.114
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3.800)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Five gears
+</td>
+<td>
+2.528
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3.736)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+2-barrel carburetor
+</td>
+<td>
+-0.979
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.318)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+3-barrel carburetor
+</td>
+<td>
+3.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(4.294)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+4-barrel carburetor
+</td>
+<td>
+1.091
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(4.450)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+6-barrel carburetor
+</td>
+<td>
+4.478
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(6.384)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+8-barrel carburetor
+</td>
+<td>
+7.250
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(8.361)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+23.879
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(20.066)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Corrected AIC
+</td>
+<td>
+197.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.893
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+7.830<sup>***</sup> (df = 16; 15)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Notes:</em>
+</td>
+<td style="text-align:left">
+<sup>***</sup>Significant at the 1 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>**</sup>Significant at the 5 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>*</sup>Significant at the 10 percent level.
+</td>
+</tr>
+</table>
+<p>Switching to stepwise regression to determine the best model.</p>
+<table style="text-align:center">
+<caption>
+<strong>Full Linear Regression Model</strong>
+</caption>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Fuel Efficiency (MPG)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Six cylinder
+</td>
+<td>
+-3.031<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.407)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Eight cylinder
+</td>
+<td>
+-2.164
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.284)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Horsepower
+</td>
+<td>
+-0.032<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.014)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Weight
+</td>
+<td>
+-2.497<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.886)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Manual Transmission
+</td>
+<td>
+1.809
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.396)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+33.708<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.605)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Corrected AIC
+</td>
+<td>
+197.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.866
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+33.571<sup>***</sup> (df = 5; 26)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Notes:</em>
+</td>
+<td style="text-align:left">
+<sup>***</sup>Significant at the 1 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>**</sup>Significant at the 5 percent level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td style="text-align:left">
+<sup>*</sup>Significant at the 10 percent level.
+</td>
+</tr>
+</table>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mpg ~ am
+## Model 2: mpg ~ cyl + hp + wt + am
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     30 720.90                                  
+## 2     26 151.03  4    569.87 24.527 1.688e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="appendix" class="section level2">
+<h2>Appendix</h2>
+<p><img src="regression_models_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

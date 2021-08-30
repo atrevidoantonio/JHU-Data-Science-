@@ -1,0 +1,43 @@
+---
+author: Anthony Perez Eisenbarth
+date: August 29, 2021
+output: slidy_presentation
+---
+
+# Introduction
+Have you ever wondered how diamonds are priced beyond the number of carats(or weight)? Price also depends on the diamond's cut, color, and clarity.
+
+- Cut: quality of the diamond from best to worst (Ideal, Premium, Very Good, Good, Fair)
+- Color: best(D) to worst(J)
+- Clarity: measures how clear the diamond is from best to worst (IF, VVS2, VVS1, VS2, VS1, SI2, SI1, I1)
+
+
+# Diamonds
+Here is a summary of the "diamonds" dataset found in the ggplot2 R package. As you can see, the factors were measured in over 50,000 diamonds 
+```{r echo=FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(hrbrthemes)
+data(diamonds)
+str(diamonds[,c(1:4,7)])
+```
+
+# Visualizing Diamond Prices
+In data analysis more than anything, a picture really is worth a thousand words.
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE}
+ggplot(diamonds, aes(x = carat, y = price, color = clarity, size = cut)) +
+  scale_size_discrete(range = c(.1, 2)) + 
+  geom_jitter() +
+  scale_y_continuous(labels = scales::dollar_format()) + 
+  labs(x = "Carat", y = "Price") + 
+  theme_light() +
+  scale_color_ipsum()
+```
+
+# Shiny
+
+The app builds off this and utilizes a linear regression model to predict the price of a diamond given its features. You can pick and choose what features to give the model and the app will provide the predicted price of your diamond. 
+
+# Links
+* shiny app:https://atrevidoantonio93.shinyapps.io/data_products/
+* source code: https://github.com/atrevidoantonio/Developing-Data-Products-Project
