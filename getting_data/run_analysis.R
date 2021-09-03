@@ -61,7 +61,6 @@ data_files <- with(read.table_instructions,
 message("    ...data files were successfully loaded into R, \n",
         "       in the list with name 'data_files'.")
 
-
 # STEP 1: Merges the training and the test sets to create one data set.
 ## Merges the train and test sets
 merged_data <- with(data_files,
@@ -72,7 +71,6 @@ merged_data <- with(data_files,
 #         for each measurement.
 target_features_indexes <- grep("mean\\(\\)|std\\(\\)",
                                 data_files$features[[2]])
-
 ## Add 2 to each index to adjust for the first 2 column we have bind
 ## that should also be included
 target_variables_indexes <- c(1, 2, # the first two columns that refer to
@@ -85,7 +83,6 @@ target_variables_indexes <- c(1, 2, # the first two columns that refer to
 
 ## Extracts the target variables to create the target data frame
 target_data <- merged_data[ , target_variables_indexes]
-
 
 ## Replace activity values with a factor based on levels and labels
 ## contained in the activity_labels data file.
@@ -104,9 +101,6 @@ descriptive_variable_names <- gsub(pattern = "BodyBody", replacement = "Body",
 tidy_data <- target_data
 names(tidy_data) <- c("subject", "activity", descriptive_variable_names)
 
-
-
-
 ## Create a dataset with the mean of each column for 'subject' and 'activity'
 tidy_data_summary <- tidy_data %>%
   group_by(subject, activity) %>%
@@ -124,5 +118,5 @@ names(tidy_data_summary) <- new_names_for_summary
 write.table(tidy_data_summary, "tidy_data_summary.txt", row.names = FALSE)
 
 message("The script 'run_analysis.R was executed successfully. \n",
-        "As a result, a new tidy data set was created with name \n", 
+        "A new tidy data set was created with name \n", 
         "'tidy_data_summary.txt' in the working directory.")
