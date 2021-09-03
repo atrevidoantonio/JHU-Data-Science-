@@ -23,7 +23,7 @@ shinyServer(function(input, output) {
     p}, height = 700)
   # create linear model
   output$predict <- renderPrint({
-    diamonds_sub <- subset( diamonds, cut == input$cut &
+    diamonds_sub <- subset(diamonds, cut == input$cut &
                               color == input$color &
                               clarity == input$clarity)
     fit <- lm(price~carat,data=diamonds_sub)

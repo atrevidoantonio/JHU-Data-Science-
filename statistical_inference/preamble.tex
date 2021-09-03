@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[sfdefault, condensed]{roboto}
+\usepackage[a4paper, width=135mmm, top=10mm, bottom=20mm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsfonts,amsmath}
+\numberwithin{equation}{section}
+\newcommand{\source}[1]{\footnotesize\caption*{\textbf{Source}: {#1}} } %
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{threeparttable}
+\usepackage{authblk}
+\usepackage{subcaption}
+\usepackage{textpos}
+\usepackage{titling}
+\usepackage{ragged2e}
+\usepackage{relsize}
+\usepackage{setspace}
+
+\newlength{\templength}
+\newlength{\textparindent}
+\setlength{\textparindent}{\parindent}
+\makeatletter
+\let \@makefntextorig \@makefntext
+% Saving the original definition so we can reuse it if necessary.
+\newcommand{\@makefntextcustom}[1]{%
+	\parindent \textparindent%
+	\hspace{-\textparindent}\hspace{-100pt}\makebox[100pt][r]{\thefootnote.\enskip}%
+	#1%
+}
+
+\renewcommand{\@makefntext}[1]{\@makefntextcustom{#1}}
+\makeatother
+
+\usepackage[colorlinks]{hyperref}
+\hypersetup{
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue
+}
+
+\clubpenalty=100000
+\widowpenalty=100000
+\singlespacing
+\usepackage{sectsty}
+\allsectionsfont{\normalfont\sffamily\huge}
+
+\begin{document}
+	$if(title)$
+	\maketitle
+	$endif$
+	$if(abstract)$
+	\begin{abstract}
+		$abstract$
+	\end{abstract}
+	$endif$
+	
+	$for(include-before)$
+	$include-before$
+	
+	$endfor$
+	$if(toc)$
+	{
+		$if(colorlinks)$
+		\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
+		$endif$
+		\setcounter{tocdepth}{$toc-depth$}
+		\tableofcontents
+	}
+	$endif$
+	$if(lot)$
+	\listoftables
+	$endif$
+	$if(lof)$
+	\listoffigures
+	$endif$
+	$body$
+	
+	$if(natbib)$
+	$if(bibliography)$
+	$if(biblio-title)$
+	$if(book-class)$
+	\renewcommand\bibname{$biblio-title$}
+	$else$
+	\renewcommand\refname{$biblio-title$}
+	$endif$
+	$endif$
+	\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+	
+	$endif$
+	$endif$
+	$if(biblatex)$
+	\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+	
+	$endif$
+	$for(include-after)$
+	$include-after$
+	
+	$endfor$
+\end{document}

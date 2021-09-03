@@ -1,0 +1,118 @@
+---
+title: "Inferential Data Analysis"
+author: "Anthony Perez Eisenbarth"
+geometry: margin=1cm
+output:
+  pdf_document:
+  template: template.tex
+keep_tex: yes
+latex_engine: pdflatex
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{array}   
+  - \usepackage{caption}
+  - \usepackage[flushleft]{threeparttable}
+  - \usepackage[sfdefault, condensed]{roboto}
+
+---
+
+# Basic inferential data analysis
+The goal of the following analysis of the 'ToothGrowth' data by Galton, is to quantifiably compare the effects of Vitamin C  in tooth growth of Guinea Pigs between the groups defined by two factors. The 'ToothGrowth' data consists of 60 independent observations for the length of tooth in Guinea Pigs 
+over two factors, the supply method and the dose of Vitamin C. The supply method refers to how Vitamin C was supplied either as *Orange Juice* (OJ) or as *Ascorbic Acid* (VC). 
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, echo = FALSE, message = FALSE)
+
+library(knitr)
+library(ggplot2)
+library(tinytex)
+library(ggthemes)
+library(boot)
+library(kableExtra)
+library(ggthemr)
+library(tidyverse)
+library(dplyr)
+library(scales)
+library(tidyr)
+library(patchwork)
+```
+
+```{r theme, include = FALSE}
+raspberry <- "#DB2955"
+candy_green <- "#95D7AE"
+onyx <- "#313435"
+babyblue <- "#47AFFF"
+prussian <- "#113255"
+sapphire <- "#255F85"
+turq <- "#76E7CD"
+emerald <- "#32936F"
+violet <- "#AA78A6"
+sky <- "#ABDDED"
+ggthemr(palette = "fresh", layout = "clean", line_weight = 0.5)
+```
+
+
+```{r, include = FALSE}
+data("ToothGrowth")
+head(ToothGrowth)
+```
+
+
+
+```{r,  echo = FALSE, warning = FALSE}
+g_len_by_supp <- ggplot(ToothGrowth, aes(supp, len)) + 
+  geom_boxplot(aes(fill = supp), show.legend = FALSE) +
+  theme(plot.title = element_text(face = "plain", size = 12)) +
+  labs(title = "Tooth length by supplement",x = 'Supplement type', y = 'Tooth length (mm)') 
+g_len_by_dose <- ggplot(ToothGrowth, aes(factor(dose), len)) + 
+  geom_boxplot(aes(fill = supp)) +
+  theme(plot.title = element_text(face = "plain", size = 12)) + 
+  labs(x ='Dose (mg)', y = 'Tooth length (mm)', title = 'Tooth length by dose')
+(g_len_by_supp | g_len_by_dose)
+```
+
+
+As a preliminary hypothesis, we can form the first research question around the supplement type. In general, is expected tooth length larger, when Vitamin C is supplied as orange juice instead of ascorbic acid?
+
+```{r}
+t_diff_supp <- t.test(len ~ supp, ToothGrowth, var.equal = FALSE)
+t_diff_supp
+```
+As can be seen, considering 95% confidence the null hypothesis cannot be rejected, since the *p*-value is greater than 0.05. So we have no evidence that there is a significant difference between the two supplements.
+
+Now, let's see if there is a significant difference between the supplements at different dosages.
+
+
+```{r}
+t_diff_supp_0.5 <- t.test(len ~ supp, data = subset(ToothGrowth, dose == 0.5))
+t_diff_supp_0.5
+```
+
+From this result, we see that the data do provide substantial evidence 
+($p < 0.006$) to reject the null hypothesis $H_0$, according to which the expected tooth length is the same when dose of 0.5 mg/day of Vitamin C is supplied as orange juice.
+
+
+```{r}
+t_diff_supp_1 <- t.test(len ~ supp, data = subset(ToothGrowth, dose == 1))
+t_diff_supp_1
+```
+
+From this result, we see that the data do provide substantial evidence 
+($p < 0.001$) to reject the null hypothesis $H_0$, according to which the expected tooth length is the same when dose of 1 mg/day of Vitamin C is supplied as orange juice.
+
+
+```{r}
+t_diff_supp_2 <- t.test(len ~ supp, data = subset(ToothGrowth, dose == 2))
+t_diff_supp_2
+```
+
+From this result, we see that the data do *not* provide substantial evidence 
+($p > 0.9638$) to reject the null hypothesis $H_0$, according to which the expected tooth length is the same when dose of 2 mg/day of Vitamin C is supplied 
+either as orange juice or as ascorbic acid.
+
+
+### Conclusions
+
+The data does not provide ample evidence to support the hypothesis that there is a significant difference between Vitamin C and Asorbic acid supplements on the expected tooth length of Guinea pigs, However, when analyzing the dosage level, there is a significant difference for 0.5 and 1 mg. At both the 0.5 mg ($p < 0.006$) and 1 mg ($p < 0.001$) dosage levels, the data provides evidence to reject null hypothesis in favor the alternative that expected tooth length is larger when Vitamin C is provided as the supplement. It is not possible to say that for 2 mg dose the supplements differ in effects on expected tooth length. The data do *not* provide substantial evidence 
+($p > 0.9638$) to reject the null hypothesis $H_0$, in which the expected tooth length is the same when dose of 2 mg/day of Vitamin C is supplied as orange juice.

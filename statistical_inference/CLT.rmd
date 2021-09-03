@@ -1,0 +1,506 @@
+---
+title: "Central Limit Theorem"
+author: "Anthony Perez Eisenbarth"
+geometry: margin=3cm
+output:
+  pdf_document:
+    template: template.tex
+    keep_tex: yes
+  latex_engine: pdflatex
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{array}   
+  - \usepackage{caption}
+  - \usepackage[flushleft]{threeparttable}
+  - \usepackage[sfdefault, condensed]{roboto}
+
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, echo = FALSE, message = FALSE)
+
+library(knitr)
+library(ggplot2)
+library(tinytex)
+library(ggthemes)
+library(boot)
+library(ggthemr)
+library(tidyverse)
+library(dplyr)
+library(scales)
+library(tidyr)
+```
+
+```{r theme, include = FALSE}
+raspberry <- "#DB2955"
+candy_green <- "#95D7AE"
+onyx <- "#313435"
+babyblue <- "#47AFFF"
+prussian <- "#113255"
+sapphire <- "#255F85"
+turq <- "#76E7CD"
+emerald <- "#32936F"
+violet <- "#AA78A6"
+sky <- "#ABDDED"
+ggthemr(palette = "fresh", layout = "clean", line_weight = 0.5)
+```
+
+```{r}
+set.seed(7095332)
+number_of_simulations <- 1000
+sample_size <- 40
+lambda <- 0.2
+```
+
+
+The Central Limit Theorem (CLT) establishes that, when independent random variables are added, their properly normalized sum tends toward a normal distribution (informally a bell curve) even if the original variables themselves are not normally distributed. Put another way, the CLT states that the sum of a number of independent and identically distributed random variables with finite variances will tend to a normal distribution as the number of variables grows.
+
+A simple example of this is that if one flips a coin many times, the probability of getting a given number of heads will approach a normal distribution, with the mean equal to half the total number of flips. At the limit of an infinite number of flips, it will equal a normal distribution.
+
+In this experiment, $m = 1000$ random samples are produced, each of which with $n = 40$ observations.  All the observations were produced from an exponential distribution $\lambda e^{-\lambda x}$ with rate $\lambda = 0.2$. The goal of the experiment is verify, through simulation, the veracity of the CLT. If the CLT holds, then the probability distribution of the average and the variance of the samples drawn from the above exponential distribution will converge to a standard normal distribution. 
+
+```{r}
+simulated_samples <- tibble(
+  "sim_id" = seq_len(number_of_simulations),
+  "random_sample" = lapply(
+    X = sim_id, 
+    FUN = function(i) rexp(sample_size, lambda)
+  )
+) %>%
+  unnest(random_sample) %>%
+  mutate(
+    "obs_id" = rep(
+      seq_len(sample_size), 
+      times = number_of_simulations
+    )
+  ) %>%
+  select(sim_id, obs_id, "value" = random_sample)
+```
+
+# Simulated Samples
+
+From the simulation, a 1000 samples $\underline{y}_i$ were obtained,  which contain observations that are the realizations of the 40000 i.i.d. random variables $Y_{i,j} \sim Exp(0.2)$  where $i = 1,2,\dots,1000$ and $j = 1,2, \dots 40$. A random variable $Y_{i,j} \sim Exp(\lambda)$, where $\lambda \in (0, \infty)$, has an expected value $\mu_Y := E(Y_{i,j}) = \frac{1}{\lambda}$and variance $\sigma_Y^2 := Var(Y_{i,j}) = \frac{1}{\lambda^2}$. So for $\lambda = 0.2$ it is $\mu_{Y} = 5$ and $\sigma_Y^2 = 25$.  
+
+```{r}
+origin_distr_expected_value <- 1/lambda
+origin_distr_variance <- 1/(lambda^2)
+```
+
+```{r, echo = FALSE, warning = FALSE}
+(figure_1 <- ggplot(
+  data = simulated_samples,
+  mapping = aes(
+    x = value,
+    group = sim_id
+  )
+) +
+    geom_line(
+      aes(
+        color = "Density of Simulated Samples"
+      ),
+      stat = "density",
+      alpha = 0.05
+    ) +
+    stat_function(
+      aes(
+        color = "Density of Exp(0.2)"
+      ),
+      fun = dexp,
+      args = list("rate" = lambda),
+      geom = "line"
+    ) +
+    scale_color_manual(
+      values = c(onyx, sapphire)
+    ) + 
+    geom_vline(
+      aes(
+        xintercept = origin_distr_expected_value,
+        linetype = "Expected Value of Exp(0.2)"
+      ), 
+      color = onyx
+    ) +
+    scale_linetype_manual(
+      values = "dashed"
+    ) +
+    labs(
+      title = "Figure 1\n",
+      subtitle = "Densities of Simulated Samples",
+      x = "Observed Value",
+      y = "Density",
+      color = "",
+      linetype = "",
+      caption = paste0(
+        "\n",
+        "A comparison of the densities ",
+        "from the 1000 simulated samples ", "\n",
+        "versus the Exponential distribution ", 
+        "from which their observations were sampled."
+      )
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5),
+      legend.position = "top"
+    ))
+```
+
+
+# Sample of Sample Means
+
+For each random sample $\underline{Y}_i = (Y_{i,1}, Y_{i,2}, \dots, Y_{i,40})$, the random variable $\bar{Y}_i = \frac{1}{40} \cdot \sum_{j = 1}^{40} Y_{ij}$,is the sampling mean.  The sampling means $\bar{Y}_i$, of the the 1000 random samples, are i.i.d. random variables because they are linear transformations of the i.i.d. random variables $Y_{i,j}$.
+
+Define $X_i:=\bar{Y_i}$, so the random variable $X_i$ has expected value $\mu_X = E(X_i) = E(\bar{Y}_i)$ and variance $\sigma_X^2 = Var(X_i) = Var(\bar{Y}_i)$. The sample $\underline{x} = (x_1, x_2, \dots, x_{1000}) \equiv (\bar{y}_1, \bar{y}_2, \dots, \bar{y}_{1000})$ where $x_i = \bar{y}_i = \frac{1}{40} \cdot \sum_{j = 1}^{40} y_{i,j}$, consists of the observed sample means of 1000 original samples $\underline{y}_1, \underline{y}_2, \dots, \underline{y}_{1000}$
+
+```{r, message = FALSE}
+sample_means <- simulated_samples %>%
+  group_by(sim_id) %>%
+  summarise("value" = mean(value))
+```
+
+# Mean of Sample Means
+
+According to the proposition (P1), the random variable $X_i$  defined as equivalent to the sampling mean $\bar{Y}_i$  of the i-th random sample with $n$ observations, 
+has an expected value equal to the expected value of the distribution 
+from which the sample was taken.  
+
+So $\mu_{X} = E(X_i) = E(\bar{Y_i}) = E(Y_{ij}) = \mu_{Y} = 5$.
+
+```{r}
+expected_mean_of_sampling_mean <-
+  origin_distr_expected_value
+```
+
+Indeed the mean $\bar{x} = 4.992119$, of the sample $\underline{x}$,
+is 'very close' to the theoretical expected value $\mu_X = 5$.
+
+```{r}
+(mean_of_sample_means <- 
+    mean(sample_means$value))
+```
+
+```{r, echo = FALSE, warning=FALSE}
+(figure_2 <- ggplot(
+  data = sample_means,
+  aes(
+    x = value, 
+    y = ..density..
+  )
+) +
+    geom_histogram(
+      binwidth = 0.25,
+      color = onyx,
+      fill = candy_green,
+      alpha = 0.5
+    ) + 
+    geom_line(
+      aes(
+        color = "Density of Sample with Sample Means"
+      ),
+      stat = "density"
+    ) +
+    scale_color_manual(values = onyx) + 
+    geom_vline(
+      aes(
+        xintercept = mean_of_sample_means,
+        linetype = "Observed Mean Value"
+      ), 
+      color = candy_green
+    ) +
+    geom_vline(
+      aes(
+        xintercept = origin_distr_expected_value,
+        linetype = "Expected Mean Value"
+      ), 
+      color = onyx
+    ) +
+    scale_linetype_manual(
+      values = c("dashed", "solid")
+    ) +
+    labs(
+      title = "Figure 2\n",
+      subtitle = "Means of the Simulated Samples",
+      x = "Observed Sample Mean",
+      y = "Density of Sample with the Sample Means",
+      color = "",
+      linetype = "",
+      caption = paste0(
+        "\n",
+        "The Histogram and the Density of Sample ",
+        "with the Means of the Simulated Samples.", 
+        "\n",
+        "The Mean of all Sample Means is 'close' " ,
+        "to the Expected Value ", "\n",
+        "of the Exponential Distribution from ", 
+        "which the samples were produced ", "\n", 
+        "but the density curve is not similar."
+      )
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5),
+      legend.position = "top", 
+      legend.direction = "horizontal"
+    ))
+```
+
+Furthermore as the number of means from sample means increases 
+the cumulative mean converges to the expected value $\mu_x = 5$ (Figure 3).
+
+```{r, echo = FALSE, warning = FALSE}
+(figure_3 <- ggplot(
+  data = sample_means,
+  aes(
+    x = sim_id, 
+    y = cummean(value)
+  )
+) +
+    geom_line(
+      aes(
+        color = "Cumulative Mean of Sample Means"
+      )
+    ) +
+    geom_hline(
+      aes(
+        yintercept = expected_mean_of_sampling_mean,
+        color = "Expected Value of Sampling Mean"
+      ),
+      linetype = "dashed"
+    ) +
+    scale_color_manual(
+      values = c(candy_green, onyx)
+    ) + 
+    guides(
+      color = guide_legend(
+        override.aes = list(
+          linetype = c("solid", "dashed")
+        )
+      )
+    ) +
+    labs(
+      title = "Figure 3\n",
+      subtitle = 
+        "Cumulative Mean of Sample Means.",
+      x = "Number of Sample Means",
+      y = "Cumulative Mean",
+      color = "",
+      caption = paste(
+        "\n",
+        "The cumulative mean of i.i.d. ", 
+        "sample means, converges to the ", 
+        "theoretical expected value ", "\n",
+        "of the sampling mean, as the number ", 
+        "of the observed means increases."
+      )
+    ) + 
+    theme_minimal() + 
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5),
+      legend.position = "top"
+    ))
+```
+
+
+# Variance of Sample Means
+
+According to the proposition (P2), the random variable $X_i$  defined as equivalent to the sampling mean $\bar{Y}_i$  of the i-th random sample with $n$ observations, 
+has a variance equal to the variance of the distribution 
+from which the sample was taken divided by the sample size $n$.  
+
+So $\sigma_X^2 = Var(X_i) = Var(\bar{Y_i}) = \frac{Var(Y_{ij})}{n} = \frac{\sigma_Y^2}{n} = 0.625$.
+
+```{r}
+expected_variance_of_sampling_mean <-
+  origin_distr_variance / sample_size
+```
+
+Indeed the sample variance $s^2 = 0.625151$, of the sample $\underline{x}$,
+is 'very close' to the theoretical variance $\sigma_X^2 = 0.625$.
+
+```{r}
+(variance_of_sample_means <- 
+    var(sample_means$value))
+```
+
+Furthermore as the number of means from sample means increases 
+the cumulative variance converges  to the expected value $\sigma_X^2 = 5$ (Figure 4).
+
+```{r, echo = FALSE, warning = FALSE}
+(figure_4 <- ggplot(
+  data = sample_means,
+  aes(
+    x = sim_id, 
+    y = cumsum((value - cummean(value))^2)/sim_id)
+) +
+    geom_line(
+      aes(
+        color = "Cumulative Variance of Sample Means"
+      )
+    ) +
+    geom_hline(
+      aes(
+        yintercept = 
+          expected_variance_of_sampling_mean,
+        color = "Expected Variance of Sampling Mean"
+      ),
+      linetype = "dashed"
+    ) +
+    scale_color_manual(
+      values = c(candy_green, onyx)
+    ) + 
+    guides(
+      color = guide_legend(
+        override.aes = list(
+          linetype = c("solid", "dashed")
+        )
+      )
+    ) + 
+    labs(
+      title = "Figure 4\n",
+      subtitle = 
+        "Cumulative Variance of Sample Means.",
+      x = "Number of Sample Means",
+      y = "Cumulative Variance",
+      color = "",
+      caption = paste(
+        "\n",
+        "The cumulative variance of i.i.d. ", 
+        "sample means, converges to the ", 
+        "theoretical variance ", "\n",
+        "of the sampling mean, as the number ", 
+        "of the observed means increases."
+      )
+    ) +
+    theme_minimal() + 
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5),
+      legend.position = "top"
+    ))
+```
+\newpage
+
+# Distribution of Sample Means
+
+According to the proposition (P3), the distribution of the random variable $X_i$ defined as equivalent to the sampling mean $\bar{Y}_i$ of the i-th random sample with n observations, 
+is approximately Normal with expected value $\mu_X$ and variance $\sigma_X^2$. 
+
+From a visual examination of the density (Figure 5), and the QQ plot (Figure 6) of the sample $\underline{x}$  with the means of the simulated samples  it is clear that the observed values fit or approximate those from a normal distribution
+with expected value $\mu_X = 5$ and variance $\sigma_X^2 = 0.625$.
+
+```{r, echo = FALSE, warning = FALSE}
+(figure_5 <- ggplot(
+  data = sample_means,
+  mapping = aes(
+    x = value
+  )
+) +
+    geom_density(
+      aes(
+        fill = "PDF of the Sample with Sample Means"
+      ),
+      color = prussian,
+      alpha = 0.5
+    ) +
+    scale_fill_manual(
+      values = candy_green
+    ) + 
+    stat_function(
+      aes(color = "PDF of Normal(5,0.625)"),
+      fun = dnorm,
+      args = list(
+        "mean" = expected_mean_of_sampling_mean,
+        "sd" = 
+          sqrt(expected_variance_of_sampling_mean)
+      ),
+      geom = "line"
+    ) +
+    scale_color_manual(values = onyx) + 
+    labs(
+      title = "Figure 5\n",
+      subtitle = 
+        "Density of Sample with the Sample Means",
+      x = "Observed Value", 
+      y = "Density",
+      color = "",
+      fill = "",
+      caption = paste0(
+        "\n",
+        "The Density of the Sample with Sample Means", 
+        "seems to fit very well ", "\n", 
+        "the PDF of the Normal Distribution with ", 
+        "expected value 5 and variance 0.625."
+      )
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5),
+      legend.position = "top"
+    ))
+```
+
+```{r, echo = FALSE, warning = FALSE}
+(figure_6 <- ggplot(
+  data = sample_means, 
+  aes(sample = value)
+) +
+    geom_qq(
+      distribution = qnorm,
+      dparams = list(
+        "mean" = expected_mean_of_sampling_mean,
+        "sd" = 
+          sqrt(expected_variance_of_sampling_mean)
+      ),
+      color = prussian,
+      shape = 19,
+      alpha = 0.5
+    ) +
+    geom_qq_line(
+      distribution = qnorm,
+      dparams = list(
+        "mean" = expected_mean_of_sampling_mean,
+        "sd" = 
+          sqrt(expected_variance_of_sampling_mean)
+      )
+    ) +
+    labs(
+      title = "Figure 6\n",
+      subtitle = 
+        "QQ Plot for Sample with Sample Means",
+      x = "Observed Value", 
+      y = "Theoretical Value",
+      caption = paste0(
+        "\n",
+        "The Observed Values of the Sample with ", 
+        "Sample Means seems to correspond very well ", 
+        "\n", 
+        "to the Theoretical values from the Normal " , 
+        "Distribution with expected value 5 ", 
+        "and variance 0.625."
+      )
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.caption = element_text(hjust = 0.5)
+    ))
+```
+
+The normality assumption was also verified with the Shapiro-Wilk test, 
+from which a p-value 0.680 was obtained, indicating that there are not enough evidence 
+to discard the null hypothesis, that the sample comes from a Normal Distribution.  
+
+```{r}
+shapiro.test(sample_means$value)
+```
+
+# Remarks
+
+It is quite possible, especially for the proposition (P3), 
+to obtain samples that may not pass the Shapiro-Wilk test for normality. 
+By increasing the number of simulated samples and/or the sample size of each of them, 
+the observations will eventually conform  with the claims of Central Limit Theorem (CTL) 
+and the Law of Large Numbers (LLN).
