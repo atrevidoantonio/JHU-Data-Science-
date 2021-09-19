@@ -12,6 +12,8 @@ navbar:
       href: regression_models.html
     - text: "Developing Data Products"
       href: presentation.html
+    - text: "Reproducible Research"
+      href: PA1_template.html
 output:
   html_document:
     theme: lumen

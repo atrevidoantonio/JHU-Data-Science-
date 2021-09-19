@@ -1,0 +1,148 @@
+---
+title: 'Reproducible Research'
+author: 'Anthony Perez Eisenbarth'
+output:
+  html_document
+---
+## Loading and preprocessing the data
+```{r global options, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r library, echo = FALSE}
+library(knitr)
+library(ggplot2)
+library(tinytex)
+library(ggthemes)
+library(lubridate)
+library(tidyverse)
+library(dplyr)
+library(scales)
+library(tidyr)
+raspberry <- '#DB2955'
+onyx <- '#313435'
+babyblue <- '#47AFFF'
+claret <- '#7C0B2B'
+prussian <- '#113255'
+sapphire <- '#255F85'
+turq <- '#76E7CD'
+emerald <- '#32936F'
+violet <- '#AA78A6'
+sky <- '#ABDDED'
+
+```
+
+```{r}
+data <- read_csv('~/GitHub/JHU-Data-Science-/reproducible_research/data/activity.csv')
+```
+
+## What is mean total number of steps taken per day?
+```{r}
+
+total_steps <- data %>% group_by(date) %>% summarize_at(.vars = 'steps', sum, na.rm = TRUE)
+
+ggplot(total_steps, aes(x = steps)) +
+  geom_histogram(color = sapphire, fill = sapphire) +
+  theme_minimal() + 
+  theme(axis.line = element_line(size = 0.25, color = 'darkgrey'),
+        text = element_text(family = 'Roboto Condensed', size = 11), 
+        legend.position = 'bottom') + 
+  scale_x_continuous(labels = scales::comma) +
+  labs(x = '\nSteps', y = '')
+mean(total_steps$steps, na.rm = TRUE)
+median(total_steps$steps, na.rm = TRUE)
+```
+
+## What is the average daily activity pattern?
+```{r}
+averages <- data %>% group_by(interval) %>% summarize(steps = mean(steps, na.rm = TRUE))
+  
+ggplot(averages, aes(x = interval, y = steps)) +
+  geom_line(size = 0.5, color = sapphire) +
+  theme_minimal() + 
+  theme(axis.line = element_line(size = 0.25, color = onyx),
+        text = element_text(family = 'Roboto Condensed', size = 11), 
+        legend.position = 'bottom') +
+  labs(x = '5-minute interval', y = 'Average number of steps taken')
+```
+
+On average across all the days in the dataset, the 5-minute interval contains
+the maximum number of steps?
+  ```{r}
+averages[which.max(averages$steps),]
+```
+
+## Imputing missing values
+
+There are many days/intervals where there are missing values (coded as `NA`). The presence of missing days may introduce bias into some calculations or summaries of the data.
+
+```{r how_many_missing}
+missing <- is.na(data$steps)
+# How many missing
+table(missing)
+```
+
+We'll fill in the missing values with the average steps of the five-minute interval.
+
+```{r}
+# Replace each missing value with the mean value of its 5-minute interval
+imputed_data <- 
+  data %>% 
+  group_by(interval) %>% 
+  mutate(
+    steps = 
+      if_else(is.na(steps), mean(steps, na.rm = TRUE), steps)
+    )
+```
+Now, using the filled data set, let's make a histogram of the total number of steps taken each day and calculate the mean and median total number of steps.
+
+```{r}
+imputed_total_steps <-  imputed_data %>% group_by(date) %>% summarize_at(.vars = 'steps', sum, na.rm = TRUE)
+
+ggplot(imputed_total_steps, aes(x = steps)) +
+  geom_histogram(color = sapphire, fill = sapphire) +
+  theme_minimal() + 
+  theme(axis.line = element_line(size = 0.25, color = onyx),
+        text = element_text(family = 'Roboto Condensed', size = 11), 
+        legend.position = 'bottom') + 
+  scale_x_continuous(labels = scales::comma) +
+  labs(x = '\nSteps', y = '')
+mean(imputed_total_steps$steps)
+median(imputed_total_steps$steps)
+
+```
+
+Mean and median values are higher after imputing missing data. The reason is
+that in the original data, there are some days with `steps` values `NA` for 
+any `interval`. The total number of steps taken in such days are set to 0s by
+default. However, after replacing missing `steps` values with the mean `steps`
+of associated `interval` value, these 0 values are removed from the histogram
+of total number of steps taken each day.
+
+## Are there differences in activity patterns between weekdays and weekends?
+First, let's find the day of the week for each measurement in the dataset. In
+this part, we use the dataset with the filled-in values.
+
+```{r}
+imputed_data <-
+  imputed_data %>% 
+  mutate(date = ymd(date),
+         day = weekdays(date)) %>%
+  mutate(weekday = if_else(day %in% c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'), 'Weekday', 'Weekend'))
+imputed_averages <- aggregate(steps ~ interval + weekday, data = imputed_data, mean)
+
+```
+
+Now, let's make a panel plot containing plots of average number of steps taken
+on weekdays and weekends.
+```{r}
+ggplot(imputed_averages, aes(interval, steps)) + 
+  geom_line(color = sapphire) +
+  theme_minimal() + 
+  theme(axis.line = element_line(size = 0.25, color = onyx),
+        text = element_text(family = 'Roboto Condensed', size = 11), 
+        legend.position = 'bottom') +
+  facet_grid(~ factor(weekday)) +
+  labs(x = '5-minute interval', y = 'Number of steps')
+```
+

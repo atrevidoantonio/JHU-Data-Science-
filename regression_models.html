@@ -256,6 +256,9 @@ $(document).ready(function () {
 <li>
   <a href="presentation.html">Developing Data Products</a>
 </li>
+<li>
+  <a href="PA1_template.html">Reproducible Research</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -288,12 +291,12 @@ $(document).ready(function () {
 <p>Since we are exploring the impact of transmission type on gas mileage (MPG), we can start our analysis by plotting the gas mileage of each car against its cylinder number (V4, V6, V8). But rather than just a simple scatter plot with MPG plotted against cylinder number, we can also visualize a few other key factors affecting MPG. In this case, let’s color the observations by transmission type and allocate the size of points by horsepower (we could also use engine displacement rather than horsepower).</p>
 <p><img src="regression_models_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>From first glance there is a noticeable negative linear association with MPG and the number of cylinders a car possesses. By the same token, there is a strong correlation with horsepower and cylinder number, which implies that with more horsepower, there is an associated decline in fuel efficiency. Inspecting this plot, however, it is rather difficult to gauge whether manual transmission cars have better fuel efficiency. Noticeably, there are a large number of number of manual transmission cars with four cylinders than those with an automatic transmission. We can confirm our visual inspection by presenting the summary statistics of the cars grouped by cylinder number and transmission type.</p>
-<div id="zaigdqkviu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jmkuduzcsw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#zaigdqkviu .gt_table {
+#jmkuduzcsw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -318,7 +321,7 @@ $(document).ready(function () {
   border-left-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_heading {
+#jmkuduzcsw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -330,7 +333,7 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_title {
+#jmkuduzcsw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -340,7 +343,7 @@ $(document).ready(function () {
   border-bottom-width: 0;
 }
 
-#zaigdqkviu .gt_subtitle {
+#jmkuduzcsw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -350,13 +353,13 @@ $(document).ready(function () {
   border-top-width: 0;
 }
 
-#zaigdqkviu .gt_bottom_border {
+#jmkuduzcsw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_col_headings {
+#jmkuduzcsw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -371,7 +374,7 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_col_heading {
+#jmkuduzcsw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -391,7 +394,7 @@ $(document).ready(function () {
   overflow-x: hidden;
 }
 
-#zaigdqkviu .gt_column_spanner_outer {
+#jmkuduzcsw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -403,15 +406,15 @@ $(document).ready(function () {
   padding-right: 4px;
 }
 
-#zaigdqkviu .gt_column_spanner_outer:first-child {
+#jmkuduzcsw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zaigdqkviu .gt_column_spanner_outer:last-child {
+#jmkuduzcsw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zaigdqkviu .gt_column_spanner {
+#jmkuduzcsw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -423,7 +426,7 @@ $(document).ready(function () {
   width: 100%;
 }
 
-#zaigdqkviu .gt_group_heading {
+#jmkuduzcsw .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -445,7 +448,7 @@ $(document).ready(function () {
   vertical-align: middle;
 }
 
-#zaigdqkviu .gt_empty_group_heading {
+#jmkuduzcsw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -460,15 +463,15 @@ $(document).ready(function () {
   vertical-align: middle;
 }
 
-#zaigdqkviu .gt_from_md > :first-child {
+#jmkuduzcsw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zaigdqkviu .gt_from_md > :last-child {
+#jmkuduzcsw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zaigdqkviu .gt_row {
+#jmkuduzcsw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -487,7 +490,7 @@ $(document).ready(function () {
   overflow-x: hidden;
 }
 
-#zaigdqkviu .gt_stub {
+#jmkuduzcsw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -499,7 +502,7 @@ $(document).ready(function () {
   padding-left: 12px;
 }
 
-#zaigdqkviu .gt_summary_row {
+#jmkuduzcsw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -509,7 +512,7 @@ $(document).ready(function () {
   padding-right: 5px;
 }
 
-#zaigdqkviu .gt_first_summary_row {
+#jmkuduzcsw .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -519,7 +522,7 @@ $(document).ready(function () {
   border-top-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_grand_summary_row {
+#jmkuduzcsw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -529,7 +532,7 @@ $(document).ready(function () {
   padding-right: 5px;
 }
 
-#zaigdqkviu .gt_first_grand_summary_row {
+#jmkuduzcsw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -539,11 +542,11 @@ $(document).ready(function () {
   border-top-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_striped {
+#jmkuduzcsw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zaigdqkviu .gt_table_body {
+#jmkuduzcsw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -552,7 +555,7 @@ $(document).ready(function () {
   border-bottom-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_footnotes {
+#jmkuduzcsw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -566,13 +569,13 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_footnote {
+#jmkuduzcsw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#zaigdqkviu .gt_sourcenotes {
+#jmkuduzcsw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -586,41 +589,41 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#zaigdqkviu .gt_sourcenote {
+#jmkuduzcsw .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#zaigdqkviu .gt_left {
+#jmkuduzcsw .gt_left {
   text-align: left;
 }
 
-#zaigdqkviu .gt_center {
+#jmkuduzcsw .gt_center {
   text-align: center;
 }
 
-#zaigdqkviu .gt_right {
+#jmkuduzcsw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zaigdqkviu .gt_font_normal {
+#jmkuduzcsw .gt_font_normal {
   font-weight: normal;
 }
 
-#zaigdqkviu .gt_font_bold {
+#jmkuduzcsw .gt_font_bold {
   font-weight: bold;
 }
 
-#zaigdqkviu .gt_font_italic {
+#jmkuduzcsw .gt_font_italic {
   font-style: italic;
 }
 
-#zaigdqkviu .gt_super {
+#jmkuduzcsw .gt_super {
   font-size: 65%;
 }
 
-#zaigdqkviu .gt_footnote_marks {
+#jmkuduzcsw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -696,12 +699,12 @@ $(document).ready(function () {
 </div>
 <p>A boxplot better reveals the difference in fuel efficiency between the two transmission types. Plotting these groups and allocating the size of the points by the weight of the cars (measured in pounds) reveals another, and perhaps, obvious pattern: heavier cars tend to have worse fuel efficiency. The boxplot, however, also reveals that manual transmission cars tend to have higher fuel efficiency than those with automatic transmission. This relationship, however, is potentially confounded by other factors, namely, the weight of the car and horsepower.</p>
 <p><img src="regression_models_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="lucyqogmld" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="laczafhytm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lucyqogmld .gt_table {
+#laczafhytm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -726,7 +729,7 @@ $(document).ready(function () {
   border-left-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_heading {
+#laczafhytm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -738,7 +741,7 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_title {
+#laczafhytm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -748,7 +751,7 @@ $(document).ready(function () {
   border-bottom-width: 0;
 }
 
-#lucyqogmld .gt_subtitle {
+#laczafhytm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -758,13 +761,13 @@ $(document).ready(function () {
   border-top-width: 0;
 }
 
-#lucyqogmld .gt_bottom_border {
+#laczafhytm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_col_headings {
+#laczafhytm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -779,7 +782,7 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_col_heading {
+#laczafhytm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -799,7 +802,7 @@ $(document).ready(function () {
   overflow-x: hidden;
 }
 
-#lucyqogmld .gt_column_spanner_outer {
+#laczafhytm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -811,15 +814,15 @@ $(document).ready(function () {
   padding-right: 4px;
 }
 
-#lucyqogmld .gt_column_spanner_outer:first-child {
+#laczafhytm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lucyqogmld .gt_column_spanner_outer:last-child {
+#laczafhytm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lucyqogmld .gt_column_spanner {
+#laczafhytm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -831,7 +834,7 @@ $(document).ready(function () {
   width: 100%;
 }
 
-#lucyqogmld .gt_group_heading {
+#laczafhytm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -853,7 +856,7 @@ $(document).ready(function () {
   vertical-align: middle;
 }
 
-#lucyqogmld .gt_empty_group_heading {
+#laczafhytm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -868,15 +871,15 @@ $(document).ready(function () {
   vertical-align: middle;
 }
 
-#lucyqogmld .gt_from_md > :first-child {
+#laczafhytm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lucyqogmld .gt_from_md > :last-child {
+#laczafhytm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lucyqogmld .gt_row {
+#laczafhytm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -895,7 +898,7 @@ $(document).ready(function () {
   overflow-x: hidden;
 }
 
-#lucyqogmld .gt_stub {
+#laczafhytm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -907,7 +910,7 @@ $(document).ready(function () {
   padding-left: 12px;
 }
 
-#lucyqogmld .gt_summary_row {
+#laczafhytm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -917,7 +920,7 @@ $(document).ready(function () {
   padding-right: 5px;
 }
 
-#lucyqogmld .gt_first_summary_row {
+#laczafhytm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -927,7 +930,7 @@ $(document).ready(function () {
   border-top-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_grand_summary_row {
+#laczafhytm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -937,7 +940,7 @@ $(document).ready(function () {
   padding-right: 5px;
 }
 
-#lucyqogmld .gt_first_grand_summary_row {
+#laczafhytm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -947,11 +950,11 @@ $(document).ready(function () {
   border-top-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_striped {
+#laczafhytm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lucyqogmld .gt_table_body {
+#laczafhytm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -960,7 +963,7 @@ $(document).ready(function () {
   border-bottom-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_footnotes {
+#laczafhytm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -974,13 +977,13 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_footnote {
+#laczafhytm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#lucyqogmld .gt_sourcenotes {
+#laczafhytm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -994,41 +997,41 @@ $(document).ready(function () {
   border-right-color: #D3D3D3;
 }
 
-#lucyqogmld .gt_sourcenote {
+#laczafhytm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#lucyqogmld .gt_left {
+#laczafhytm .gt_left {
   text-align: left;
 }
 
-#lucyqogmld .gt_center {
+#laczafhytm .gt_center {
   text-align: center;
 }
 
-#lucyqogmld .gt_right {
+#laczafhytm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lucyqogmld .gt_font_normal {
+#laczafhytm .gt_font_normal {
   font-weight: normal;
 }
 
-#lucyqogmld .gt_font_bold {
+#laczafhytm .gt_font_bold {
   font-weight: bold;
 }
 
-#lucyqogmld .gt_font_italic {
+#laczafhytm .gt_font_italic {
   font-style: italic;
 }
 
-#lucyqogmld .gt_super {
+#laczafhytm .gt_super {
   font-size: 65%;
 }
 
-#lucyqogmld .gt_footnote_marks {
+#laczafhytm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
