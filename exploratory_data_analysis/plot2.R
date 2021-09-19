@@ -10,10 +10,11 @@ powerDT <- mutate(
   Global_active_power = as.numeric(Global_active_power),
   # Making a POSIXct date capable of being filtered and graphed by time of day
   dateTime = as.POSIXct(paste(Date, Time), format = "%d/%m/%Y %H:%M:%S")
-)
+) %>%
+mutate(Date = lubridate::dmy(Date))
 
 # Filter Dates for 2007-02-01 and 2007-02-02
-powerDT <- filter(powerDT, Date >= "2007-02-01" & Date <= "2007-02-03")
+powerDT <- filter(powerDT, Date >= "2007-02-01" & Date <= "2007-02-02")
 
 png("plot2.png", width = 480, height = 480)
 
